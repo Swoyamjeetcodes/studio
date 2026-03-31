@@ -71,6 +71,16 @@ const renderComponent = (props = {}) => {
 describe('ChannelSelectionList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockActions.loadChannelList.mockImplementation(() => Promise.resolve());
+  });
+
+  it('shows a loader while the channel list is loading', () => {
+    mockActions.loadChannelList.mockImplementationOnce(() => new Promise(() => {}));
+
+    renderComponent();
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Search for a channel')).not.toBeInTheDocument();
   });
 
   it('renders a list of editable channels and hides non-editable ones', async () => {
